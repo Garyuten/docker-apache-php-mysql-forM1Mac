@@ -1,0 +1,46 @@
+version: '3.3'
+
+services:
+  mysql:
+    # for M1 Mac
+    platform: linux/x86_64
+    image: mysql:5.7-oracle
+    volumes:
+      - ./docker/data:/var/lib/mysql
+      - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+    ports:
+      - 33060:3306
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=myDatabaseName
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+      - TZ=Asia/Tokyo
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-buffer-pool-size=64M --explicit_defaults_for_timestamp=1
+    tty: true
+
+  php:
+    build: ./docker/
+    volumes:
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/logs:/var/log/httpd
+      - ./html:/var/www/html
+    ports:
+      - 8080:80
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - UPLOAD_LIMIT=256M
+    ports:
+      - 4040:80
+    volumes:
+      - ./docker/phpmyadmin/sessions:/sessions
+      # - ./docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+
