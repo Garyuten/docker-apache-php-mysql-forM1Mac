@@ -1,7 +1,12 @@
-# docker-apache-php-mysql-forM1Mac
-M1 MacのDockerでAPache+PHP7.4+MySQL5.7+phpMyAdmin環境
+# Docker LAMP for M1 Mac
 
-'''
-gh repo clone Garyuten/docker-apache-php-mysql-forM1Mac
-docker-compose -project-name yourproject up
-'''
+# Container
+- Apache 2.0 Handler
+- PHP 7.4.33
+- MySQL 5.7.41
+- phpMyAdmin 5.1.1
+
+## Run
+```
+docker-compose up -d
+```
